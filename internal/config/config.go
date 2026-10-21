@@ -11,6 +11,7 @@ import (
 
 type Config struct {
 	SyslogUDP     string        `yaml:"syslog_udp"`
+	SyslogTCP     string        `yaml:"syslog_tcp"`
 	HTTPAddr      string        `yaml:"http_addr"`
 	ClickHouseDSN string        `yaml:"clickhouse_dsn"`
 	RulesDir      string        `yaml:"rules_dir"`
@@ -22,6 +23,7 @@ type Config struct {
 func Default() Config {
 	return Config{
 		SyslogUDP:     ":5514",
+		SyslogTCP:     ":5514",
 		HTTPAddr:      ":8080",
 		ClickHouseDSN: "clickhouse://default:@localhost:9000/silentfabric",
 		RulesDir:      "rules",
@@ -45,6 +47,7 @@ func Load(path string) (Config, error) {
 	}
 	env := map[string]*string{
 		"SF_SYSLOG_UDP":     &cfg.SyslogUDP,
+		"SF_SYSLOG_TCP":     &cfg.SyslogTCP,
 		"SF_HTTP_ADDR":      &cfg.HTTPAddr,
 		"SF_CLICKHOUSE_DSN": &cfg.ClickHouseDSN,
 		"SF_RULES_DIR":      &cfg.RulesDir,

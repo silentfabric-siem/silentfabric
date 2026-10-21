@@ -1,0 +1,18 @@
+title: Local User Account Created
+id: 3c8f1a2e-5b6d-4f7e-9a0b-8c7d6e5f4a31
+status: experimental
+description: Detects creation of a local user on Linux, which may indicate persistence.
+author: SilentFabric
+date: 2026-10-21
+tags:
+  - attack.persistence
+  - attack.t1136.001
+logsource:
+  product: linux
+detection:
+  selection:
+    event.action: user-created
+  condition: selection
+falsepositives:
+  - Administrators adding users
+level: low

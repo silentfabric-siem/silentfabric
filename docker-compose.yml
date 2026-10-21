@@ -31,6 +31,7 @@ services:
       - ./rules:/etc/silentfabric/rules:ro
     ports:
       - "514:5514/udp"
+      - "514:5514/tcp"
       - "8080:8080"
 
 volumes:

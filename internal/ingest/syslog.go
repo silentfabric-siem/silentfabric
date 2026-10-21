@@ -176,7 +176,7 @@ func ListenSyslogUDP(ctx context.Context, addr string, out chan<- event.Event) e
 		}
 		ev := ParseSyslog(string(buf[:n]), time.Now().UTC())
 		if host, _, err := net.SplitHostPort(peer.String()); err == nil {
-			ev.Fields["source.ip"] = host
+			ev.Fields["log.source.ip"] = host
 			if ev.Host == "" {
 				ev.Host = host
 			}
