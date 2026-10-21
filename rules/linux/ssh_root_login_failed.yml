@@ -1,0 +1,20 @@
+title: Failed SSH Login As Root
+id: 5f2b7c3e-8d1a-4b6e-9f0c-1a2b3c4d5e6f
+status: experimental
+description: Detects failed SSH password authentication for the root account.
+author: SilentFabric
+date: 2026-10-21
+tags:
+  - attack.credential-access
+  - attack.t1110
+logsource:
+  product: linux
+  service: sshd
+detection:
+  selection:
+    syslog.appname: sshd
+    message|contains: 'Failed password for root'
+  condition: selection
+falsepositives:
+  - Administrators mistyping the root password
+level: medium

@@ -1,0 +1,9 @@
+# Copy to silentfabric.yaml and run: silentfabric serve -config silentfabric.yaml
+# Any value can also be set with an SF_* environment variable (e.g. SF_CLICKHOUSE_DSN).
+syslog_udp: ":5514"
+http_addr: ":8080"
+clickhouse_dsn: "clickhouse://default:@localhost:9000/silentfabric"
+rules_dir: "rules"
+batch_size: 5000
+flush_interval: 2s
+alert_webhook: ""   # e.g. a Slack incoming-webhook URL

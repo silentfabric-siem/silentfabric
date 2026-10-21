@@ -1,0 +1,2 @@
+{"@timestamp":"2026-10-21T10:00:00Z","host":{"name":"web01"},"syslog":{"appname":"sshd"},"message":"Failed password for root from 203.0.113.9 port 50022 ssh2"}
+{"@timestamp":"2026-10-21T10:00:05Z","host":{"name":"web01"},"syslog":{"appname":"sshd"},"message":"Accepted publickey for matt from 198.51.100.4"}
