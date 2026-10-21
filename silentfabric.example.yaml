@@ -8,3 +8,6 @@ rules_dir: "rules"
 batch_size: 5000
 flush_interval: 2s
 alert_webhook: ""   # e.g. a Slack incoming-webhook URL
+ui_user: "admin"
+ui_password: ""     # the web UI stays off until this is set
+ingest_token: ""    # if set, HTTP ingest requires "Authorization: Bearer <token>"

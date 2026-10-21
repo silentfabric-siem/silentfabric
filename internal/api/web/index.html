@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SilentFabric</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <span class="brand">SilentFabric</span>
+  <nav>
+    <button class="tab active" data-view="search">Search</button>
+    <button class="tab" data-view="alerts">Alerts</button>
+  </nav>
+</header>
+
+<main>
+  <section id="view-search" class="view">
+    <form id="search-form" class="bar">
+      <input id="q" type="search" placeholder='e.g. failed password  host:web01  -event.outcome:success  user.name:adm*' autocomplete="off" spellcheck="false">
+      <select id="range" aria-label="Time range">
+        <option value="15m">Last 15 minutes</option>
+        <option value="1h">Last hour</option>
+        <option value="24h" selected>Last 24 hours</option>
+        <option value="7d">Last 7 days</option>
+        <option value="30d">Last 30 days</option>
+        <option value="90d">Last 90 days</option>
+      </select>
+      <button type="submit">Search</button>
+    </form>
+    <p id="search-status" class="status"></p>
+    <div id="histogram" class="histogram" aria-label="Events over time"></div>
+    <div class="layout">
+      <aside id="facets" class="facets"></aside>
+      <div id="results" class="results"></div>
+    </div>
+  </section>
+
+  <section id="view-alerts" class="view" hidden>
+    <form id="alerts-form" class="bar">
+      <select id="alerts-range" aria-label="Time range">
+        <option value="24h">Last 24 hours</option>
+        <option value="7d" selected>Last 7 days</option>
+        <option value="30d">Last 30 days</option>
+        <option value="90d">Last 90 days</option>
+      </select>
+      <select id="alerts-level" aria-label="Level">
+        <option value="">All levels</option>
+        <option value="critical">Critical</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+        <option value="informational">Informational</option>
+      </select>
+      <button type="submit">Refresh</button>
+    </form>
+    <p id="alerts-status" class="status"></p>
+    <div id="alerts" class="results"></div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

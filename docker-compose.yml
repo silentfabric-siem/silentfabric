@@ -27,6 +27,9 @@ services:
     environment:
       SF_CLICKHOUSE_DSN: clickhouse://silentfabric:${CLICKHOUSE_PASSWORD:-change-me}@clickhouse:9000/silentfabric
       SF_ALERT_WEBHOOK: ${SF_ALERT_WEBHOOK:-}
+      SF_UI_USER: ${SF_UI_USER:-admin}
+      SF_UI_PASSWORD: ${SF_UI_PASSWORD:?set SF_UI_PASSWORD in .env}
+      SF_INGEST_TOKEN: ${SF_INGEST_TOKEN:-}
     volumes:
       - ./rules:/etc/silentfabric/rules:ro
     ports:
