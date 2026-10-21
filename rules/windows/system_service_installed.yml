@@ -1,0 +1,20 @@
+title: New Windows Service Installed
+id: 9b1e4c7a-2d3f-4e8b-a6c5-1f0e9d8c7b42
+status: experimental
+description: Detects installation of a new Windows service, used by attackers for persistence and remote execution.
+author: SilentFabric
+date: 2026-10-21
+tags:
+  - attack.persistence
+  - attack.t1543.003
+logsource:
+  product: windows
+  service: system
+detection:
+  selection:
+    EventID: 7045
+    Provider_Name: 'Service Control Manager'
+  condition: selection
+falsepositives:
+  - Software installs and updates
+level: low

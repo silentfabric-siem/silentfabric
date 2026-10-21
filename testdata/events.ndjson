@@ -1,2 +1,8 @@
 {"@timestamp":"2026-10-21T10:00:00Z","host":{"name":"web01"},"syslog":{"appname":"sshd"},"message":"Failed password for root from 203.0.113.9 port 50022 ssh2"}
-{"@timestamp":"2026-10-21T10:00:05Z","host":{"name":"web01"},"syslog":{"appname":"sshd"},"message":"Accepted publickey for matt from 198.51.100.4"}
+{"@timestamp":"2026-10-21T10:00:05Z","host":{"name":"web01"},"syslog":{"appname":"sshd"},"message":"Accepted publickey for matt from 198.51.100.4 port 4022 ssh2"}
+{"EventTime":"2026-10-21 10:01:00","Hostname":"DC01","EventID":1102,"SourceName":"Microsoft-Windows-Eventlog","Channel":"Security","Message":"The audit log was cleared."}
+{"winlog":{"event_id":1,"channel":"Microsoft-Windows-Sysmon/Operational","provider_name":"Microsoft-Windows-Sysmon","computer_name":"WS02","event_data":{"Image":"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe","CommandLine":"powershell.exe -nop -enc SQBFAFgA"}},"message":"Process Create"}
+{"ProviderName":"Service Control Manager","EventID":7045,"Channel":"System","Computer":"SRV01","Message":"A service was installed in the system."}
+{"MESSAGE":"new user: name=backdoor, UID=1001, GID=1001, home=/home/backdoor, shell=/bin/bash","_HOSTNAME":"db01","SYSLOG_IDENTIFIER":"useradd"}
+{"timestamp":"2026-10-21 08:15:00.123456-0700","eventMessage":"   matt : 3 incorrect password attempts ; TTY=ttys000 ; PWD=/Users/matt ; USER=root ; COMMAND=/bin/zsh","processImagePath":"/usr/bin/sudo","processID":4410,"host":{"name":"matts-mbp"}}
+{"EventTime":"2026-10-21 10:02:00","Hostname":"WS01","EventID":4624,"SourceName":"Microsoft-Windows-Security-Auditing","Channel":"Security","TargetUserName":"matt","LogonType":"2"}

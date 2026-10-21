@@ -1,0 +1,26 @@
+title: PowerShell Encoded Command
+id: 6a3f2e1b-7c94-4d0a-8b5e-2f1d3c4b5a69
+status: experimental
+description: Detects PowerShell started with a Base64-encoded command line, often used to hide malicious scripts.
+author: SilentFabric
+date: 2026-10-21
+tags:
+  - attack.execution
+  - attack.t1059.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_image:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\pwsh.exe'
+  selection_flag:
+    CommandLine|contains:
+      - ' -enc '
+      - ' -encodedcommand '
+      - ' -e '
+  condition: all of selection_*
+falsepositives:
+  - Management tools that wrap scripts in encoded commands
+level: medium

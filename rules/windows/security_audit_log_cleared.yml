@@ -1,0 +1,19 @@
+title: Windows Security Audit Log Cleared
+id: 0d6d7d9c-3b8e-4c4f-9a0e-6f2a1c5e8b11
+status: experimental
+description: Detects clearing of the Windows Security event log, a common step to hide intrusion activity.
+author: SilentFabric
+date: 2026-10-21
+tags:
+  - attack.defense-evasion
+  - attack.t1070.001
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 1102
+  condition: selection
+falsepositives:
+  - Administrators deliberately rotating logs
+level: high

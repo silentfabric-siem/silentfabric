@@ -1,0 +1,19 @@
+title: Failed Sudo Authentication
+id: 4e2d9b8a-1c3f-4a5e-8d7c-6b5a4f3e2d19
+status: experimental
+description: Detects failed sudo password attempts on Linux or macOS.
+author: SilentFabric
+date: 2026-10-21
+tags:
+  - attack.privilege-escalation
+  - attack.t1548.003
+logsource:
+  product: linux
+detection:
+  selection:
+    event.action: sudo
+    event.outcome: failure
+  condition: selection
+falsepositives:
+  - Users mistyping their password
+level: low

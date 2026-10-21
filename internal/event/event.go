@@ -4,6 +4,7 @@ package event
 import (
 	"fmt"
 	"sort"
+	"strconv"
 	"time"
 )
 
@@ -63,7 +64,8 @@ func flattenInto(out map[string]string, prefix string, v interface{}) {
 	case string:
 		out[prefix] = t
 	case float64:
-		out[prefix] = fmt.Sprintf("%g", t)
+		// 'f' keeps large integers such as PIDs out of exponent form.
+		out[prefix] = strconv.FormatFloat(t, 'f', -1, 64)
 	default:
 		out[prefix] = fmt.Sprint(t)
 	}

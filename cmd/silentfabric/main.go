@@ -19,6 +19,7 @@ import (
 	"github.com/silentfabric-siem/silentfabric/internal/detect"
 	"github.com/silentfabric-siem/silentfabric/internal/event"
 	"github.com/silentfabric-siem/silentfabric/internal/ingest"
+	"github.com/silentfabric-siem/silentfabric/internal/parse"
 	"github.com/silentfabric-siem/silentfabric/internal/pipeline"
 	"github.com/silentfabric-siem/silentfabric/internal/store"
 )
@@ -78,6 +79,7 @@ func rulesTest(dir, file string) error {
 	}
 	hits := 0
 	for i := range evs {
+		parse.Normalize(&evs[i])
 		alerts, err := e.Evaluate(context.Background(), &evs[i])
 		if err != nil {
 			return err
@@ -115,10 +117,18 @@ func serve(cfgPath string) error {
 
 	go func() {
 		if err := ingest.ListenSyslogUDP(ctx, cfg.SyslogUDP, events); err != nil {
-			slog.Error("syslog listener stopped", "err", err)
+			slog.Error("syslog udp listener stopped", "err", err)
 			stop()
 		}
 	}()
+	if cfg.SyslogTCP != "" {
+		go func() {
+			if err := ingest.ListenSyslogTCP(ctx, cfg.SyslogTCP, events); err != nil {
+				slog.Error("syslog tcp listener stopped", "err", err)
+				stop()
+			}
+		}()
+	}
 
 	mux := http.NewServeMux()
 	mux.Handle("/api/v1/events", ingest.HTTPHandler(events))

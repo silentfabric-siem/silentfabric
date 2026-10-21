@@ -8,6 +8,7 @@ import (
 
 	"github.com/silentfabric-siem/silentfabric/internal/detect"
 	"github.com/silentfabric-siem/silentfabric/internal/event"
+	"github.com/silentfabric-siem/silentfabric/internal/parse"
 )
 
 // Sink persists events and alerts. The ClickHouse store implements it.
@@ -61,6 +62,7 @@ func Run(ctx context.Context, in <-chan event.Event, engine *detect.Engine, sink
 				flush()
 				return
 			}
+			parse.Normalize(&ev)
 			matched, err := engine.Evaluate(ctx, &ev)
 			if err != nil {
 				slog.Warn("rule evaluation failed", "err", err)
