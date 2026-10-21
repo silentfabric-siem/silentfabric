@@ -159,7 +159,7 @@ func TestSonicWall(t *testing.T) {
 		"event.dataset": "sonicwall.firewall", "observer.serial_number": "0017C5A1B2C3", "event.code": "36",
 		"source.ip": "198.51.100.7", "source.port": "44321", "observer.ingress.interface": "X1",
 		"destination.ip": "10.0.0.10", "destination.port": "3389", "destination.hostname": "rdp-host",
-		"network.transport": "tcp", "network.protocol": "ms-wbt-server", "event.action": "drop",
+		"network.transport": "tcp", "network.protocol": "ms-wbt-server", "event.action": "deny", "sonicwall.fw_action": "drop",
 		"sonicwall.time": "2026-10-21 11:43:00 UTC",
 	})
 	if ev.Message != "TCP packet dropped due to Policy" || ev.Host != "203.0.113.1" {

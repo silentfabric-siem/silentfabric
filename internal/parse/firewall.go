@@ -82,7 +82,12 @@ func parseSonicWall(ev *event.Event) bool {
 	setDefault(f, "event.code", kv["m"])
 	setDefault(f, "user.name", kv["usr"])
 	setDefault(f, "rule.name", kv["rule"])
-	setDefault(f, "event.action", kv["fw_action"])
+	switch strings.Trim(kv["fw_action"], `"`) {
+	case "drop":
+		f["event.action"] = "deny"
+	case "forward":
+		f["event.action"] = "allow"
+	}
 
 	if ip, port, iface, host := sonicwallEndpoint(kv["src"]); ip != "" {
 		f["source.ip"], f["source.port"] = ip, port
