@@ -18,6 +18,9 @@ type Config struct {
 	BatchSize     int           `yaml:"batch_size"`
 	FlushInterval time.Duration `yaml:"flush_interval"`
 	AlertWebhook  string        `yaml:"alert_webhook"`
+	UIUser        string        `yaml:"ui_user"`
+	UIPassword    string        `yaml:"ui_password"`
+	IngestToken   string        `yaml:"ingest_token"`
 }
 
 func Default() Config {
@@ -29,6 +32,7 @@ func Default() Config {
 		RulesDir:      "rules",
 		BatchSize:     5000,
 		FlushInterval: 2 * time.Second,
+		UIUser:        "admin",
 	}
 }
 
@@ -52,6 +56,9 @@ func Load(path string) (Config, error) {
 		"SF_CLICKHOUSE_DSN": &cfg.ClickHouseDSN,
 		"SF_RULES_DIR":      &cfg.RulesDir,
 		"SF_ALERT_WEBHOOK":  &cfg.AlertWebhook,
+		"SF_UI_USER":        &cfg.UIUser,
+		"SF_UI_PASSWORD":    &cfg.UIPassword,
+		"SF_INGEST_TOKEN":   &cfg.IngestToken,
 	}
 	for k, dst := range env {
 		if v, ok := os.LookupEnv(k); ok {

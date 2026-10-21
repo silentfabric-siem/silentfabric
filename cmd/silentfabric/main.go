@@ -15,6 +15,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/silentfabric-siem/silentfabric/internal/api"
 	"github.com/silentfabric-siem/silentfabric/internal/config"
 	"github.com/silentfabric-siem/silentfabric/internal/detect"
 	"github.com/silentfabric-siem/silentfabric/internal/event"
@@ -131,8 +132,16 @@ func serve(cfgPath string) error {
 	}
 
 	mux := http.NewServeMux()
-	mux.Handle("/api/v1/events", ingest.HTTPHandler(events))
+	mux.Handle("/api/v1/events", api.RequireToken(cfg.IngestToken, ingest.HTTPHandler(events)))
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok\n")) })
+	if cfg.UIPassword != "" {
+		mux.Handle("/", api.Handler(ch, cfg.UIUser, cfg.UIPassword))
+	} else {
+		slog.Warn("search UI disabled: set SF_UI_PASSWORD to enable it")
+	}
+	if cfg.IngestToken == "" {
+		slog.Warn("HTTP ingest accepts unauthenticated events: set SF_INGEST_TOKEN to require a token")
+	}
 	srv := &http.Server{Addr: cfg.HTTPAddr, Handler: mux, ReadHeaderTimeout: 10 * time.Second}
 	go func() {
 		slog.Info("http listening", "addr", cfg.HTTPAddr)

@@ -4,14 +4,14 @@ An open source SIEM that is cheap to run, simple to operate, and has no paywalle
 
 SilentFabric normalizes every log once, runs [Sigma](https://github.com/SigmaHQ/sigma) rules on events as they stream in, and stores everything in [ClickHouse](https://clickhouse.com), a columnar database that typically compresses logs around 10x. A small deployment is one VM running two processes: the SilentFabric binary and ClickHouse. No JVM, no Kafka, no cluster.
 
-> **Status: early.** Syslog (UDP and TCP) and JSON ingest, parsers for Windows, Linux, macOS, Ubiquiti UniFi and SonicWall, streaming Sigma detection, ClickHouse storage, and webhook alerts work. Search UI, correlation rules, and cases are next.
+> **Status: early.** Syslog (UDP and TCP) and JSON ingest, parsers for Windows, Linux, macOS, Ubiquiti UniFi and SonicWall, streaming Sigma detection, ClickHouse storage, and webhook alerts work. A web UI for search and alerts is built in. Correlation rules and cases are next.
 
 ## Quick start
 
 Requires Docker with the Compose plugin.
 
 ```sh
-cp .env.example .env          # set CLICKHOUSE_PASSWORD
+cp .env.example .env          # set CLICKHOUSE_PASSWORD and SF_UI_PASSWORD
 docker compose up -d --build
 ```
 
@@ -28,6 +28,15 @@ or point devices' syslog at port 514 (UDP or TCP) on the VM. See [docs/collector
 docker compose exec clickhouse clickhouse-client -d silentfabric \
   -q "SELECT time, rule_title, host FROM alerts ORDER BY time DESC LIMIT 10"
 ```
+
+## Web UI
+
+Open `http://<vm>:8080` and sign in with `SF_UI_USER` / `SF_UI_PASSWORD`. The UI stays off until a password is set.
+
+- **Search**: type words to match anywhere in the log, `field:value` to filter (`host:web01`, `event.dataset:windows.security`), `*` for wildcards (`user.name:adm*`), quotes for phrases, and a leading `-` to exclude. Click a facet or any field value to add it as a filter.
+- **Alerts**: every rule match, filterable by level, with the event that triggered it.
+
+The UI uses plain HTTP basic auth. If the VM is reachable from outside your network, put it behind a reverse proxy with TLS.
 
 ## Sizing (estimates)
 
@@ -57,12 +66,14 @@ Events expose normalized fields with dotted names (`source.ip`, `user.name`, `ev
 | `internal/parse` | Format detection and field normalization per platform and vendor |
 | `internal/detect` | Streaming Sigma engine |
 | `internal/pipeline` | Batching between detection and storage |
-| `internal/store` | ClickHouse writer |
+| `internal/store` | ClickHouse writer and search queries |
+| `internal/query` | Search box syntax to parameterized SQL |
+| `internal/api` | Web UI and JSON API (`/api/v1/search`, `/api/v1/alerts`) |
 | `deploy/clickhouse` | Table schema, 90-day event retention |
 
 ## Roadmap
 
-1. Search UI with facets and timeline; alert triage states
+1. Alert triage states (new, acknowledged, closed) and saved searches
 2. More parsers (Wazuh alerts, Fortinet, pfSense); OTLP logs ingest
 3. Sigma correlation rules (count, value count, sequences) as scheduled ClickHouse queries
 4. Cases, threat-intel matching (MISP, STIX/TAXII), OIDC login and RBAC
